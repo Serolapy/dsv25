@@ -7,9 +7,7 @@ import Markup from 'node-vk-bot-api/lib/markup.js';
 import fetch from 'node-fetch';
 import { FormData } from 'node-fetch';
 import fs from 'fs';
-import { createReadStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
-
+import dataURLtoBlob from 'dataurl-to-blob';
 import generator from './image/generator.js';
 
 export default function startBot (config, database){
@@ -132,7 +130,7 @@ export default function startBot (config, database){
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
 
-let blob = await new Promise(resolve => canvas.msToBlob(resolve, 'image/png'));
+let blob = dataURLtoBlob(canvas.toDataURL());
 // Добавляем файл в FormData как поток
 formData.append('photo', blob, 'valentine.png');
 
