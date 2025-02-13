@@ -132,7 +132,7 @@ export default function startBot (config, database){
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
 
-let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+let blob = await new Promise(resolve => canvas.msToBlob(resolve, 'image/png'));
 // Добавляем файл в FormData как поток
 formData.append('photo', blob, 'valentine.png');
 
