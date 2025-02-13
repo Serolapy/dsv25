@@ -5,6 +5,7 @@ import Stage from 'node-vk-bot-api/lib/stage.js';
 import Markup from 'node-vk-bot-api/lib/markup.js';
 
 import fetch from 'node-fetch';
+import { FormData } from 'node-fetch';
 import fs from 'node:fs';
 
 import generator from './image/generator.js';
