@@ -12,7 +12,6 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "canvas": "^3.1.0",
-    "dataurl-to-blob": "^0.0.1",
     "fs": "^0.0.1-security",
     "node-fetch": "^3.3.2",
     "node-vk-bot-api": "^3.5.0"

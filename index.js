@@ -126,18 +126,14 @@ export default function startBot (config, database){
 			const buffer = canvas.toBuffer("image/png");
 			fs.writeFileSync(temp_name, buffer);
 
-
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
+			formData.append('photo', await fs.openAsBlob(temp_name), 'valentine.png');
 
-let blob = dataURLtoBlob(canvas.toDataURL());
-// Добавляем файл в FormData как поток
-formData.append('photo', blob, 'valentine.png');
-
-const response_upload_data = await fetch(uploadServer.upload_url, {
-    method: 'POST',
-    body: formData
-});
+			const response_upload_data = await fetch(uploadServer.upload_url, {
+			    method: 'POST',
+			    body: formData
+			});
 			const upload_data = await response_upload_data.json();
 			const data = await bot.execute('photos.saveMessagesPhoto', {
 				photo: upload_data.photo,
@@ -176,17 +172,13 @@ const response_upload_data = await fetch(uploadServer.upload_url, {
 					const uploadServer = await profbot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 					const formData = new FormData();
 					const temp_name = ctx.session.temp_name;
-					// Получаем информацию о файле
 
-// let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-
-// Добавляем файл в FormData как поток
-formData.append('photo', blob, 'valentine.png');
-
-const response_upload_data = await fetch(uploadServer.upload_url, {
-    method: 'POST',
-    body: formData
-});
+					formData.append('photo', await fs.openAsBlob(temp_name), 'valentine.png');
+					
+					const response_upload_data = await fetch(uploadServer.upload_url, {
+					    method: 'POST',
+					    body: formData
+					});
 					const upload_data = await response_upload_data.json();
 					const data = await profbot.execute('photos.saveMessagesPhoto', {
 						photo: upload_data.photo,
