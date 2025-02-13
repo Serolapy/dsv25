@@ -7,8 +7,8 @@ import Markup from 'node-vk-bot-api/lib/markup.js';
 import fetch from 'node-fetch';
 import { FormData } from 'node-fetch';
 import fs from 'fs';
-import { readFile } from 'node:fs/promises';
-import { Blob } from 'buffer';
+import { createReadStream } from 'node:fs';
+import { stat } from 'node:fs/promises';
 
 import generator from './image/generator.js';
 
@@ -131,16 +131,23 @@ export default function startBot (config, database){
 
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
-			// Читаем файл асинхронно
-			const fileBuffer = await readFile(temp_name);
-			// Создаем Blob из буфера
-			const blob = new Blob([fileBuffer]);
-			formData.append('photo', blob, 'valentine.png');
-			
-			const response_upload_data = await fetch(uploadServer.upload_url, {
-				method: 'POST',
-				body: formData
-			});
+// Получаем информацию о файле
+const fileInfo = await stat(temp_name);
+
+// Создаем поток чтения файла
+const fileStream = createReadStream(temp_name);
+
+// Добавляем файл в FormData как поток
+formData.append('photo', fileStream, {
+    filename: 'valentine.png',
+    contentType: 'image/png',
+    knownLength: fileInfo.size
+});
+
+const response_upload_data = await fetch(uploadServer.upload_url, {
+    method: 'POST',
+    body: formData
+});
 			const upload_data = await response_upload_data.json();
 			const data = await bot.execute('photos.saveMessagesPhoto', {
 				photo: upload_data.photo,
@@ -178,16 +185,24 @@ export default function startBot (config, database){
 
 					const uploadServer = await profbot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 					const formData = new FormData();
-					// Читаем файл асинхронно
-					const fileBuffer = await readFile(temp_name);
-					// Создаем Blob из буфера
-					const blob = new Blob([fileBuffer]);
-					formData.append('photo', blob, 'valentine.png');
-					
-					const response_upload_data = await fetch(uploadServer.upload_url, {
-						method: 'POST',
-						body: formData
-					});
+					const temp_name = ctx.session.temp_name;
+					// Получаем информацию о файле
+const fileInfo = await stat(temp_name);
+
+// Создаем поток чтения файла
+const fileStream = createReadStream(temp_name);
+
+// Добавляем файл в FormData как поток
+formData.append('photo', fileStream, {
+    filename: 'valentine.png',
+    contentType: 'image/png',
+    knownLength: fileInfo.size
+});
+
+const response_upload_data = await fetch(uploadServer.upload_url, {
+    method: 'POST',
+    body: formData
+});
 					const upload_data = await response_upload_data.json();
 					const data = await profbot.execute('photos.saveMessagesPhoto', {
 						photo: upload_data.photo,
