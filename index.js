@@ -7,7 +7,8 @@ import Markup from 'node-vk-bot-api/lib/markup.js';
 import fetch from 'node-fetch';
 import { FormData } from 'node-fetch';
 import fs from 'fs';
-import openAsBlob from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
+import { Blob } from 'buffer';
 
 import generator from './image/generator.js';
 
@@ -130,7 +131,11 @@ export default function startBot (config, database){
 
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
-			formData.append('photo', await openAsBlob(ctx.session.temp_name), 'valentine.png');
+			// Читаем файл асинхронно
+			const fileBuffer = await readFile(temp_name);
+			// Создаем Blob из буфера
+			const blob = new Blob([fileBuffer]);
+			formData.append('photo', blob, 'valentine.png');
 			
 			const response_upload_data = await fetch(uploadServer.upload_url, {
 				method: 'POST',
@@ -173,7 +178,11 @@ export default function startBot (config, database){
 
 					const uploadServer = await profbot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 					const formData = new FormData();
-					formData.append('photo', await openAsBlob(ctx.session.temp_name), 'valentine.png');
+					// Читаем файл асинхронно
+					const fileBuffer = await readFile(temp_name);
+					// Создаем Blob из буфера
+					const blob = new Blob([fileBuffer]);
+					formData.append('photo', blob, 'valentine.png');
 					
 					const response_upload_data = await fetch(uploadServer.upload_url, {
 						method: 'POST',
