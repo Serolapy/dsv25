@@ -131,14 +131,10 @@ export default function startBot (config, database){
 
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
-// Получаем информацию о файле
-const fileInfo = await stat(temp_name);
 
-// Создаем поток чтения файла
-const fileStream = createReadStream(temp_name);
-
+let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
 // Добавляем файл в FormData как поток
-formData.append('photo', fileStream, 'valentine.png');
+formData.append('photo', blob, 'valentine.png');
 
 const response_upload_data = await fetch(uploadServer.upload_url, {
     method: 'POST',
@@ -183,13 +179,11 @@ const response_upload_data = await fetch(uploadServer.upload_url, {
 					const formData = new FormData();
 					const temp_name = ctx.session.temp_name;
 					// Получаем информацию о файле
-const fileInfo = await stat(temp_name);
 
-// Создаем поток чтения файла
-const fileStream = createReadStream(temp_name);
+// let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
 
 // Добавляем файл в FormData как поток
-formData.append('photo', fileStream, 'valentine.png');
+formData.append('photo', blob, 'valentine.png');
 
 const response_upload_data = await fetch(uploadServer.upload_url, {
     method: 'POST',
