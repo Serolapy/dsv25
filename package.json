@@ -1,0 +1,18 @@
+{
+  "name": "dsv25",
+  "version": "1.0.0",
+  "description": "Бот для отправки валентинок на День святого Валентина 2025",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Serolapy",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "canvas": "^3.1.0",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^3.3.2",
+    "node-vk-bot-api": "^3.5.0"
+  }
+}
