@@ -130,9 +130,7 @@ export default function startBot (config, database){
 
 			const uploadServer = await bot.execute('photos.getMessagesUploadServer', { peer_id: ctx.message.peer_id });
 			const formData = new FormData();
-			const fileBuffer = fs.readFileSync(temp_name);
-			const blob = new Blob([fileBuffer]);
-			formData.append('photo', blob, 'valentine.png');
+			formData.append('photo', await openAsBlob(ctx.session.temp_name), 'valentine.png');
 			
 			const response_upload_data = await fetch(uploadServer.upload_url, {
 				method: 'POST',
