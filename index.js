@@ -138,11 +138,7 @@ const fileInfo = await stat(temp_name);
 const fileStream = createReadStream(temp_name);
 
 // Добавляем файл в FormData как поток
-formData.append('photo', fileStream, {
-    filename: 'valentine.png',
-    contentType: 'image/png',
-    knownLength: fileInfo.size
-});
+formData.append('photo', fileStream, 'valentine.png');
 
 const response_upload_data = await fetch(uploadServer.upload_url, {
     method: 'POST',
@@ -193,11 +189,7 @@ const fileInfo = await stat(temp_name);
 const fileStream = createReadStream(temp_name);
 
 // Добавляем файл в FormData как поток
-formData.append('photo', fileStream, {
-    filename: 'valentine.png',
-    contentType: 'image/png',
-    knownLength: fileInfo.size
-});
+formData.append('photo', fileStream, 'valentine.png');
 
 const response_upload_data = await fetch(uploadServer.upload_url, {
     method: 'POST',
